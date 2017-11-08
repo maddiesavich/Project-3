@@ -1,0 +1,91 @@
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
+public class FireworksCanvas extends JComponent implements MouseListener, KeyListener {
+
+	// Initialize
+	protected double time, speed, angle;
+	
+	// Paint Component
+	public void paintComponent(Graphics g) {
+		
+	}
+	
+	// Methods for MouseListener and KeyListener
+	@Override
+	public void keyPressed(KeyEvent e) {
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+
+	}
+
+	// Methods to calculate trajectory
+	// Method for distance traveled in x direction
+	public double trajectoryX() {
+		double trajectoryX = (speed) * (Math.cos(angle)) * (time);
+		return trajectoryX;
+	}
+
+	// Method for distance traveled in Y direction
+	public double trajectoryY() {
+		double trajectoryY = (speed) * (Math.sin(angle)) * (time) - (1/2) * (-9.8) * Math.pow(time, 2);
+		return trajectoryY;
+	}
+
+	// Create frame
+	public static void main(String[] args) {
+		JFrame frame = new JFrame("Fireworks!");
+
+		frame.add(new FireworksCanvas());
+
+		frame.pack();
+
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+		frame.setSize(1000, 1000);
+
+		frame.setVisible(true);
+	}
+
+}
