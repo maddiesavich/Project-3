@@ -1,0 +1,35 @@
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
+public class FireworksCanvas extends JComponent {
+	
+	// Initialize
+	Color NAVY = new Color(22, 145, 217);
+	
+	// Paint Component
+	public void paintComponent(Graphics g) {
+		g.setColor(Color.GREEN);
+		g.fillRect(0, 990, 100, 10);
+		g.setColor(NAVY);
+		g.fillRect(0, 989, 100, 989);
+	}
+
+	// Method to create screen
+	public static void screen() {
+		JFrame frame = new JFrame("Fireworks!");
+
+		frame.add(new FireworksCanvas());
+
+		frame.pack();
+
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+		frame.setSize(1000, 1000);
+
+		frame.setVisible(true);
+	}
+}
