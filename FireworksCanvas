@@ -1,24 +1,35 @@
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Scanner;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-public class FireworksCanvas extends JComponent implements MouseListener, KeyListener {
+public class Fireworks implements MouseListener, KeyListener {
 
 	// Initialize
-	protected double time, speed, angle;
-	
+	protected static double speed;
+	protected static double angle;
+	protected static double time = 1000;
+	Color NAVY = new Color(22, 145, 217);
+
+	// Create instance for methods
+	static ProjectileMethods projectile = new ProjectileMethods(speed, angle, time);
+
 	// Paint Component
 	public void paintComponent(Graphics g) {
-		
+		g.setColor(Color.GREEN);
+		g.fillRect(0, 990, 100, 10);
+		g.setColor(NAVY);
+		g.fillRect(0, 989, 100, 989);
 	}
-	
+
 	// Methods for MouseListener and KeyListener
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -60,32 +71,26 @@ public class FireworksCanvas extends JComponent implements MouseListener, KeyLis
 
 	}
 
-	// Methods to calculate trajectory
-	// Method for distance traveled in x direction
-	public double trajectoryX() {
-		double trajectoryX = (speed) * (Math.cos(angle)) * (time);
-		return trajectoryX;
-	}
-
-	// Method for distance traveled in Y direction
-	public double trajectoryY() {
-		double trajectoryY = (speed) * (Math.sin(angle)) * (time) - (1/2) * (-9.8) * Math.pow(time, 2);
-		return trajectoryY;
-	}
-
-	// Create frame
 	public static void main(String[] args) {
-		JFrame frame = new JFrame("Fireworks!");
+		
+		// Call method to create the screen
+		FireworksCanvas.screen();
 
-		frame.add(new FireworksCanvas());
+		// Import the Scanner
+		Scanner in = new Scanner(System.in);
 
-		frame.pack();
+		// Prompt the user to enter a value for launch angle
+		System.out.println("Please enter a number for the launch angle of the projectile [0-90]: ");
+		double angle = in.nextDouble();
 
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		// Prompt the user to enter a value for speed of the projectile
+		System.out.println("Please enter a number for the speed of the projectile: ");
+		double speed = in.nextDouble();
 
-		frame.setSize(1000, 1000);
+		// Call methods to print the coordinates of the center of the projectile
+		System.out.println("The coordinates of where the projectile will explode are: ("
+				+ projectile.trajectoryX(speed, angle, time) + ", " + projectile.trajectoryY(speed, angle, time) + ")");
 
-		frame.setVisible(true);
 	}
 
 }
