@@ -1,0 +1,159 @@
+// This class contains the methods needed to draw onto the canvas
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.geom.Line2D;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JSlider;
+import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+public class Scenery extends JComponent implements ActionListener {
+
+	// Initialize
+	private Graphics g;
+	Color NAVY = new Color(22, 145, 217);
+	protected JButton launch;
+	protected JTextField speedInput, angleInput, timeInput;
+	protected double speed, angle, time;
+	protected JLabel speedLabel, angleLabel, timeLabel;
+	protected JSlider type;
+	protected JLabel sliderLabel;
+	protected int yOne, yTwo, xOne;
+	protected int height = getHeight();
+	protected int width = getWidth();
+
+	// Create instance for methods
+	protected ProjectileMethods projectile = new ProjectileMethods(speed, angle, time);
+	int x = (int) (projectile.trajectoryX(speed, angle, time));
+	int y = (int) (projectile.trajectoryY(x));
+
+	public Scenery() {
+
+		setLayout(new FlowLayout(FlowLayout.LEFT));
+
+		// Create text fields/labels/slider for user input
+		sliderLabel = new JLabel();
+		type = new JSlider();
+		type.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				// sliderLabel.getText(Double.parseDouble(type.getValue()));
+
+			}
+
+		});
+
+		speedLabel = new JLabel("Enter speed (m/s): ");
+		add(speedLabel);
+		speedInput = new JTextField(3);
+		speedInput.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Get speed from user and store for calculation
+				speed = Double.parseDouble(speedInput.getText());
+
+			}
+
+		});
+		add(speedInput);
+
+		angleLabel = new JLabel("Enter angle (degrees): ");
+		add(angleLabel);
+		angleInput = new JTextField(3);
+		angleInput.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Get angle from user and store for calculation
+				angle = Double.parseDouble(angleInput.getText());
+
+			}
+
+		});
+		add(angleInput);
+
+		timeLabel = new JLabel("Enter time (seconds): ");
+		add(timeLabel);
+		timeInput = new JTextField(3);
+		timeInput.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Get time from user and store for calculation
+				time = Double.parseDouble(timeInput.getText());
+
+			}
+
+		});
+		add(timeInput);
+
+		// Create new buttons for user input
+		launch = new JButton("Launch!");
+		launch.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Graphics g = getGraphics();
+
+			}
+		});
+		add(launch);
+	}
+	
+	// Paint Component
+		@Override
+		public void paintComponent(Graphics g) {
+			int width = getWidth();
+			int height = getHeight();
+			g.setColor(NAVY);
+			g.fillRect(0, 0, width, height);
+			g.setColor(Color.GREEN);
+			g.fillRect(0, 7 * height / 8, width, height);
+			g.setColor(Color.YELLOW);
+			g.fillOval(780, 100, 50, 50);
+			g.setColor(NAVY);
+			g.fillOval(765, 100, 50, 50);
+			drawPath(g);
+			drawFirework(g);
+		}	
+		
+	// Method to draw path of the firework with fillOval
+	public void drawPath (Graphics g) {
+		g.setColor(Color.RED);
+		for (int i = 0; i < time; i += 0.1) {
+			int xOne = (int)((speed) * (Math.cos(Math.toRadians(angle)))*i);
+			int yOne = (int)((speed * (Math.sin(Math.toRadians(angle)))*i));
+			g.fillOval(xOne, yOne, 7, 7);
+		}
+		
+	}
+
+	// Method to draw a firework
+	public void drawFirework(Graphics g) {
+		int xTwo = (int)((speed) * (Math.cos(Math.toRadians(angle)))* time);
+		int yTwo = (int)((9.8 * ((speed * (Math.sin(Math.toRadians(angle))))*time - 0.5 * (9.8) * time * time)));
+		// Draw circles that have an increasing radius
+		for( int i = 120; i >= 10; i = i - 10) {
+			g.drawOval(x - i,(( height - y) - i), 2 * i, 2 * i);
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		System.out.println("Action Performed");
+
+	}
+
+}
