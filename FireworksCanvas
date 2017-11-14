@@ -1,30 +1,24 @@
+// This class creates a frame for the project to run on
+
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-public class FireworksCanvas extends JComponent {
+public class FireworksCanvas extends JComponent{
 	
-	// Initialize
-	Color NAVY = new Color(22, 145, 217);
-	
-	// Paint Component
-	public void paintComponent(Graphics g) {
-		g.setColor(Color.GREEN);
-		g.fillRect(0, 990, 100, 10);
-		g.setColor(NAVY);
-		g.fillRect(0, 989, 100, 989);
-	}
 
 	// Method to create screen
 	public static void screen() {
+		
+		Scenery canvas = new Scenery();
+		
 		JFrame frame = new JFrame("Fireworks!");
 
-		frame.add(new FireworksCanvas());
-
-		frame.pack();
+		frame.add(canvas);
 
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
