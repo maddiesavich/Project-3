@@ -1,3 +1,4 @@
+
 // This class contains the methods needed to draw onto the canvas
 
 import java.awt.BorderLayout;
@@ -6,99 +7,78 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.geom.Line2D;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class Scenery extends JComponent implements ActionListener {
+public class Scenery<ComboBox> extends JComponent implements ActionListener, ItemListener {
 
 	// Initialize
-	private Graphics g;
+	JPanel panel = new JPanel();
+	protected Graphics g;
 	Color NAVY = new Color(22, 145, 217);
+	protected String color = "Blue";
+	protected String shape = "Rectangle";
 	protected JButton launch;
 	protected JTextField speedInput, angleInput, timeInput;
 	protected double speed, angle, time;
-	protected JLabel speedLabel, angleLabel, timeLabel;
-	protected JSlider type;
-	protected JLabel sliderLabel;
+	protected JLabel speedLabel, angleLabel, timeLabel, shapeLabel, colorLabel;
 	protected int yOne, yTwo, xOne;
 	protected int height = getHeight();
 	protected int width = getWidth();
-
-	// Create instance for methods
-	protected ProjectileMethods projectile = new ProjectileMethods(speed, angle, time);
-	int x = (int) (projectile.trajectoryX(speed, angle, time));
-	int y = (int) (projectile.trajectoryY(x));
-
+	
+	// Arrays to store the shapes and colors of the fireworks
+	String [] shapeArray =  { "Square", "Diamond", "Triangle", "Star", "Heart" };
+	String [] colorArray =  { "Red", "Orange", "Yellow", "Green", "Blue", "Magenta" };
+	
+	// Create combo boxes for color and shape
+	JComboBox shapeList = new JComboBox(shapeArray);
+	JComboBox colorList = new JComboBox(colorArray);
+	
 	public Scenery() {
 
+		// Set Layout
 		setLayout(new FlowLayout(FlowLayout.LEFT));
-
-		// Create text fields/labels/slider for user input
-		sliderLabel = new JLabel();
-		type = new JSlider();
-		type.addChangeListener(new ChangeListener() {
-
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				// sliderLabel.getText(Double.parseDouble(type.getValue()));
-
-			}
-
-		});
-
+		
+		// Add and intialize everything
 		speedLabel = new JLabel("Enter speed (m/s): ");
 		add(speedLabel);
 		speedInput = new JTextField(3);
-		speedInput.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Get speed from user and store for calculation
-				speed = Double.parseDouble(speedInput.getText());
-
-			}
-
-		});
 		add(speedInput);
-
 		angleLabel = new JLabel("Enter angle (degrees): ");
 		add(angleLabel);
 		angleInput = new JTextField(3);
-		angleInput.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Get angle from user and store for calculation
-				angle = Double.parseDouble(angleInput.getText());
-
-			}
-
-		});
 		add(angleInput);
-
 		timeLabel = new JLabel("Enter time (seconds): ");
 		add(timeLabel);
 		timeInput = new JTextField(3);
-		timeInput.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Get time from user and store for calculation
-				time = Double.parseDouble(timeInput.getText());
-
-			}
-
-		});
 		add(timeInput);
+		add(shapeList);
+		add(colorList);
+		
+		// Set the index
+		shapeList.setSelectedIndex(4);
+		colorList.setSelectedIndex(5);
+		// Add the item listener
+		shapeList.addItemListener(this);
+		colorList.addItemListener(this);
+		// Label the combo boxes
+		shapeLabel = new JLabel("Shape");
+		add(shapeLabel);
+		colorLabel = new JLabel("Color");
+		add(colorLabel);
 
 		// Create new buttons for user input
 		launch = new JButton("Launch!");
@@ -106,53 +86,102 @@ public class Scenery extends JComponent implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Graphics g = getGraphics();
-
+				speed = Double.parseDouble(speedInput.getText());
+				angle = Double.parseDouble(angleInput.getText());
+				time = Double.parseDouble(timeInput.getText());
+				drawPath(g);
+				drawFirework(g);
 			}
 		});
 		add(launch);
 	}
 	
 	// Paint Component
-		@Override
-		public void paintComponent(Graphics g) {
-			int width = getWidth();
-			int height = getHeight();
-			g.setColor(NAVY);
-			g.fillRect(0, 0, width, height);
-			g.setColor(Color.GREEN);
-			g.fillRect(0, 7 * height / 8, width, height);
-			g.setColor(Color.YELLOW);
-			g.fillOval(780, 100, 50, 50);
-			g.setColor(NAVY);
-			g.fillOval(765, 100, 50, 50);
-			drawPath(g);
-			drawFirework(g);
-		}	
+	@Override
+	public void paintComponent(Graphics g) {
+		int width = getWidth();
+		int height = getHeight();
+		g.setColor(NAVY);
+		g.fillRect(0, 0, width, height);
+		g.setColor(Color.GREEN);
+		g.fillRect(0, 7 * height / 8, width, height);
+		g.setColor(Color.YELLOW);
+		g.fillOval(780, 100, 50, 50);
+		g.setColor(NAVY);
+		g.fillOval(765, 100, 45, 45);
+		drawPath(g);
+		drawFirework(g);
+	}
+			
 		
 	// Method to draw path of the firework with fillOval
 	public void drawPath (Graphics g) {
-		g.setColor(Color.RED);
-		for (int i = 0; i < time; i += 0.1) {
-			int xOne = (int)((speed) * (Math.cos(Math.toRadians(angle)))*i);
-			int yOne = (int)((speed * (Math.sin(Math.toRadians(angle)))*i));
+		g.setColor(Color.BLACK);
+		for (int i = 0; i < time; i++) { //0.1
+			int xOne = (int) (speed * ((Math.cos(Math.toRadians(angle)))*i));
+			int yOne = (int) (700 - (speed * ((Math.sin(Math.toRadians(angle))))* i - (0.5 * (9.8)) * i *i));
 			g.fillOval(xOne, yOne, 7, 7);
+			System.out.println("x: " + xOne + ", y: " + yOne);
 		}
+		
+		System.out.println("x " + xOne);
+		System.out.println("y " + yOne);
 		
 	}
 
 	// Method to draw a firework
 	public void drawFirework(Graphics g) {
+		System.out.println("angle: " + angle + ", speed: " +speed + ", time: " + time );
 		int xTwo = (int)((speed) * (Math.cos(Math.toRadians(angle)))* time);
-		int yTwo = (int)((9.8 * ((speed * (Math.sin(Math.toRadians(angle))))*time - 0.5 * (9.8) * time * time)));
-		// Draw circles that have an increasing radius
-		for( int i = 120; i >= 10; i = i - 10) {
-			g.drawOval(x - i,(( height - y) - i), 2 * i, 2 * i);
+		int yTwo = (int)(((speed * (Math.sin(Math.toRadians(angle))))*time - (0.5 * (9.8)) * time * time));
+		System.out.println(xTwo);
+		System.out.println(yTwo);
+		// Setting the color of the firework
+			for(double i=0;i<=(2*Math.PI);i += (Math.PI/50))
+			{
+				if(i/10%2==0){
+			       
+			  		if(color == null)
+					{
+						
+					}
+					else if(color.equals("Red")) {
+						g.setColor(Color.RED);
+				}else if (color.equals("Orange")) {
+					g.setColor(Color.ORANGE);
+				}
+				else if (color.equals("Yellow")) {
+					g.setColor(Color.YELLOW);
+				} else if (color.equals("Green")) {
+					g.setColor(Color.GREEN);
+				} else if (color.equals("Blue")) {
+					g.setColor(Color.BLUE);
+				} else if (color.equals("Magenta")) {
+					g.setColor(Color.MAGENTA);
+				}
+			}
+			//g.drawLine(xOne, getHeight() - yOne, (int) (xOne + 50 * Math.cos(i)),
+			//		(int) (canvas.getHeight() - y + 50 * Math.sin(i)));
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("Action Performed");
+		// System.out.println("Action Performed");
+
+	}
+
+	// Listener for the combo box
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		if ((e.getSource()).equals(colorList)) {
+			color = (String) colorList.getSelectedItem();
+			System.out.println("color" + color);
+		}
+		if ((e.getSource()).equals(shapeList)) {
+			shape = (String) shapeList.getSelectedItem();
+
+		}
 
 	}
 
