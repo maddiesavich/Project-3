@@ -1,29 +1,84 @@
-// This class creates a frame for the project to run on
-
 import java.awt.Color;
-import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Scanner;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-public class FireworksCanvas extends JComponent{
-	
+public class Fireworks extends JComponent implements KeyListener {
 
-	// Method to create screen
-	public static void screen() {
-		
-		Scenery canvas = new Scenery();
-		
-		JFrame frame = new JFrame("Fireworks!");
+	// Initialize
+	private Graphics g;
+	protected static double speed;
+	protected static double angle;
+	protected static double time;
+	protected int x = 0;
+	protected int y = 1000;
+	protected int height = getHeight();
+	protected int width = getWidth();
 
-		frame.add(canvas);
+	// Create instance for methods
+	static ProjectileMethods projectile = new ProjectileMethods(speed, angle, time);
 
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+	// Constructor
+	public Fireworks(double speed, double time, double angle) {
+		super();
+		this.speed = speed;
+		this.angle = angle;
+		this.time = time;
 
-		frame.setSize(1000, 1000);
-
-		frame.setVisible(true);
 	}
+
+	// Methods for MouseListener and KeyListener
+	@Override
+	public void keyPressed(KeyEvent e) {
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+
+	}
+
+	public void paintComponent(Graphics g) {
+		drawPath(g);
+		drawFirework(g);
+	}
+	// Method to draw a firework
+	private void drawFirework(Graphics g2) {
+		int xTwo = (int)((speed) * (Math.cos(Math.toRadians(angle)))* time);
+		int yTwo = (int)((9.8 * ((speed * (Math.sin(Math.toRadians(angle))))*time - 0.5 * (9.8) * time * time)));
+		// Draw circles that have an increasing radius
+		for( int i = 120; i >= 10; i = i - 10) {
+		g.drawOval(x - i,(( height - y) - i), 2 * i, 2 * i);
+		}
+	}
+
+	// Method to draw the path for the firework
+	private void drawPath(Graphics g) {
+		g.setColor(Color.RED);
+		for (int i = 0; i < time; i += 0.1) {
+			int xOne = (int)((speed) * (Math.cos(Math.toRadians(angle)))*i);
+			int yOne = (int)((speed * (Math.sin(Math.toRadians(angle)))*i));
+			g.fillOval(xOne, yOne, 7, 7);
+		
+		}
+	}
+	public static void main(String[] args) {
+		
+		// Call method to create the screen
+		FireworksCanvas.screen();
+	}
+
 }
