@@ -7,6 +7,7 @@ public class ProjectileMethods extends Fireworks {
 	
 	// Constructor for variables
 	public ProjectileMethods(double speed, double angle, double time){
+		super(speed, angle, time);
 		this.speed = speed;
 		this.angle = angle;
 		this.time = time;
