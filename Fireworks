@@ -1,3 +1,10 @@
+/*Madalyne Savich and Ana Acuna
+msavich2 and aacuna
+Project 3
+Lab Section: Tuesday/Thursday 11:05-12:20*/
+
+// This class runs the entire project
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -11,14 +18,15 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-public class Fireworks extends JComponent implements KeyListener {
+public class Fireworks extends JComponent{
 
 	// Initialize
 	private Graphics g;
 	protected static double speed;
 	protected static double angle;
-	protected static double time = 1000;
-	protected int x, y;
+	protected static double time;
+	protected int x = 0;
+	protected int y = 1000;
 	protected int height = getHeight();
 	protected int width = getWidth();
 
@@ -31,29 +39,6 @@ public class Fireworks extends JComponent implements KeyListener {
 		this.speed = speed;
 		this.angle = angle;
 		this.time = time;
-
-	}
-
-	// Methods for MouseListener and KeyListener
-	@Override
-	public void keyPressed(KeyEvent e) {
-
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-
-	}
-
-	public static void main(String[] args) {
-
-		// Call method to create the screen
-		FireworksCanvas.screen();
 
 	}
 
@@ -80,69 +65,11 @@ public class Fireworks extends JComponent implements KeyListener {
 			g.fillOval(xOne, yOne, 7, 7);
 		
 		}
-	
-		
 	}
-}
-
-
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-
-	}
-
 	public static void main(String[] args) {
 		
 		// Call method to create the screen
 		FireworksCanvas.screen();
-
-		// Import the Scanner
-		Scanner in = new Scanner(System.in);
-
-		// Prompt the user to enter a value for launch angle
-		System.out.println("Please enter a number for the launch angle of the projectile [0-90]: ");
-		double angle = in.nextDouble();
-
-		// Prompt the user to enter a value for speed of the projectile
-		System.out.println("Please enter a number for the speed of the projectile: ");
-		double speed = in.nextDouble();
-
-		// Call methods to print the coordinates of the center of the projectile
-		System.out.println("The coordinates of where the projectile will explode are: ("
-				+ projectile.trajectoryX(speed, angle, time) + ", " + projectile.trajectoryY(speed, angle, time) + ")");
-
 	}
 
 }
