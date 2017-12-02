@@ -1,14 +1,21 @@
+/*Madalyne Savich and Ana Acuna
+msavich2 and aacuna
+Project 3
+Lab Section: Tuesday/Thursday 11:05-12:20*/
+
 // This class contains the methods needed to draw onto the canvas
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.geom.Line2D;
+import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -34,15 +41,12 @@ public class Scenery<ComboBox> extends JComponent implements ActionListener, Ite
 	protected JTextField speedInput, angleInput, timeInput;
 	protected double speed, angle, time;
 	protected JLabel speedLabel, angleLabel, timeLabel, shapeLabel, colorLabel;
-	protected int yOne, xOne;
+	protected int yOne, xOne, xTwo, yTwo;
 	protected int height = getHeight();
 	protected int width = getWidth();
-	// int [] radius = {118, 40, 90, 40};
-	// starX[i] = new int[nPoints];
-	// starY[i] = new int[nPoints];
-	//
+
 	// Arrays to store the shapes and colors of the fireworks
-	String[] shapeArray = { "Square", "Diamond", "Triangle", "Star", "Heart" };
+	String[] shapeArray = { "Square", "Dots", "Puff", "Proposal", "Star" };
 	String[] colorArray = { "Red", "Orange", "Yellow", "Green", "Blue", "Magenta" };
 
 	// Create combo boxes for color and shape
@@ -67,16 +71,17 @@ public class Scenery<ComboBox> extends JComponent implements ActionListener, Ite
 		add(timeLabel);
 		timeInput = new JTextField(3);
 		add(timeInput);
+		shapeLabel = new JLabel("Shape:");
+		add(shapeLabel);
 		add(shapeList);
+		colorLabel = new JLabel("Color:");
+		add(colorLabel);
 		add(colorList);
 
 		// Set the index and labels
-		shapeLabel = new JLabel("Shape");
-		add(shapeLabel);
 		shapeList.setSelectedIndex(4);
-		colorLabel = new JLabel("Color");
-		add(colorLabel);
 		colorList.setSelectedIndex(5);
+
 		// Add the item listener
 		shapeList.addItemListener(this);
 		colorList.addItemListener(this);
@@ -151,42 +156,72 @@ public class Scenery<ComboBox> extends JComponent implements ActionListener, Ite
 			} else if (color.equals("Magenta")) {
 				g.setColor(Color.MAGENTA);
 			}
-			g.drawRect(xTwo - 25, yTwo - 25, 50, 50);
-			//g.drawLine(xTwo, 1000-yTwo, (int) (xTwo + 50*Math.cos(i)), (int) (1000 - yTwo + 50*Math.sin(i)));
+			// Draw square
+			g.drawRect(xTwo, 690 - yTwo, 50, 50 );
+		}
+		Random r = new Random();
+		if (shape == "Dots") {
+			if (color.equals("Red")) {
+				g.setColor(Color.RED);
+			} else if (color.equals("Orange")) {
+				g.setColor(Color.ORANGE);
+			} else if (color.equals("Yellow")) {
+				g.setColor(Color.YELLOW);
+			} else if (color.equals("Green")) {
+				g.setColor(Color.GREEN);
+			} else if (color.equals("Blue")) {
+				g.setColor(Color.BLUE);
+			} else if (color.equals("Magenta")) {
+				g.setColor(Color.MAGENTA);
+			}
+
+			// Draw random dots
+			for (int i = 0; i <= 100; i++) {
+				int pointX = r.nextInt(100) + (xTwo - 50);
+				int pointY = r.nextInt(100) + (690 - yTwo - 50);
+				g.drawOval(pointX, pointY, 2, 2);
+			}
+		}
+		if (shape == "Puff") {
+			if (color.equals("Red")) {
+				g.setColor(Color.RED);
+			} else if (color.equals("Orange")) {
+				g.setColor(Color.ORANGE);
+			} else if (color.equals("Yellow")) {
+				g.setColor(Color.YELLOW);
+			} else if (color.equals("Green")) {
+				g.setColor(Color.GREEN);
+			} else if (color.equals("Blue")) {
+				g.setColor(Color.BLUE);
+			} else if (color.equals("Magenta")) {
+				g.setColor(Color.MAGENTA);
+			}
+
+			// Allow for 100 lines of the same radius to appear around the same point
+			for (int i = 0; i <= 100; i++) {
+				g.drawLine(xTwo, 690 - yTwo, (int) (xTwo + 50 * Math.cos(i)), (int) (690 - yTwo + 50 * Math.sin(i)));
+			}
+		}
+		if (shape == "Proposal") {
+			if (color.equals("Red")) {
+				g.setColor(Color.RED);
+			} else if (color.equals("Orange")) {
+				g.setColor(Color.ORANGE);
+			} else if (color.equals("Yellow")) {
+				g.setColor(Color.YELLOW);
+			} else if (color.equals("Green")) {
+				g.setColor(Color.GREEN);
+			} else if (color.equals("Blue")) {
+				g.setColor(Color.BLUE);
+			} else if (color.equals("Magenta")) {
+				g.setColor(Color.MAGENTA);
+			}
+			// Insert and draw text
+			g.setFont(new Font("Arial", Font.ITALIC, 36));
+			g.drawString("MARRY", xTwo, 690 - yTwo);
+			g.drawString("ME?", xTwo + 15, 730 - yTwo);
 		}
 
-		if (shape == "Diamond") {
-			if (color.equals("Red")) {
-				g.setColor(Color.RED);
-			} else if (color.equals("Orange")) {
-				g.setColor(Color.ORANGE);
-			} else if (color.equals("Yellow")) {
-				g.setColor(Color.YELLOW);
-			} else if (color.equals("Green")) {
-				g.setColor(Color.GREEN);
-			} else if (color.equals("Blue")) {
-				g.setColor(Color.BLUE);
-			} else if (color.equals("Magenta")) {
-				g.setColor(Color.MAGENTA);
-			}
-			g.drawRect(xOne, yOne, 50, 50);
-		}
-		if (shape == "Triangle") {
-			if (color.equals("Red")) {
-				g.setColor(Color.RED);
-			} else if (color.equals("Orange")) {
-				g.setColor(Color.ORANGE);
-			} else if (color.equals("Yellow")) {
-				g.setColor(Color.YELLOW);
-			} else if (color.equals("Green")) {
-				g.setColor(Color.GREEN);
-			} else if (color.equals("Blue")) {
-				g.setColor(Color.BLUE);
-			} else if (color.equals("Magenta")) {
-				g.setColor(Color.MAGENTA);
-			}
-			g.drawRect(xOne, yOne, 50, 50);
-		}
 		if (shape == "Star") {
 			if (color.equals("Red")) {
 				g.setColor(Color.RED);
@@ -201,67 +236,21 @@ public class Scenery<ComboBox> extends JComponent implements ActionListener, Ite
 			} else if (color.equals("Magenta")) {
 				g.setColor(Color.MAGENTA);
 			}
-			g.drawRect(xOne, yOne, 50, 50);
-		}
-
-		if (shape == "Heart") {
-			if (color.equals("Red")) {
-				g.setColor(Color.RED);
-			} else if (color.equals("Orange")) {
-				g.setColor(Color.ORANGE);
-			} else if (color.equals("Yellow")) {
-				g.setColor(Color.YELLOW);
-			} else if (color.equals("Green")) {
-				g.setColor(Color.GREEN);
-			} else if (color.equals("Blue")) {
-				g.setColor(Color.BLUE);
-			} else if (color.equals("Magenta")) {
-				g.setColor(Color.MAGENTA);
+			for (int i = 0; i <= 6; i++) {
+				g.drawLine(xTwo, 690 - yTwo, (int) (xTwo + 50 * Math.cos(i)), (int) (690 - yTwo + 50 * Math.sin(i)));
 			}
-			g.drawRect(xOne, yOne, 50, 50);
+			for (int i = 0; i <= 6; i++) {
+				g.drawLine(xTwo + 10, 670 - yTwo, (int) (xTwo + 50 * Math.cos(i)), (int) (690 - yTwo + 50 * Math.sin(i)));
+			}
+			for (int i = 0; i <= 6; i++) {
+				g.drawLine(xTwo - 10, 670 - yTwo, (int) (xTwo + 50 * Math.cos(i)), (int) (690 - yTwo + 50 * Math.sin(i)));
+			}
 		}
-
-	}
-
-	private void drawStar() {
-
-		// We want the center coordinates of the explosion
-		// last of the path
-		int midX = xOne;
-		int midY = yOne;
-		int radius[] = { 118, 40, 90, 40 }; // I think we need to change this? Unsure?
-		int nPoints = 16;
-		int[] X = new int[nPoints];
-		int[] Y = new int[nPoints];
-
-		for (double current = 0; current < nPoints; current++) {
-			int i = (int) current;
-			double x = Math.cos(current * ((2 * Math.PI) / midX)) * radius[i % 4];
-			double y = Math.sin(current * ((2 * Math.PI) / midY)) * radius[i % 4];
-
-			X[i] = (int) x + midX;
-			Y[i] = (int) y + midY;
-		}
-
-		g.setColor(Color.WHITE);
-		g.fillPolygon(X, Y, nPoints);
-		// for (double i = 0.0; i <= 5; i++) {
-		// int n = (int) i;
-		// double xStar = Math.cos(i * ((2 * Math.PI) / 10)) * radius[n % 4];
-		// double yStar = Math.sin(i * ((2 * Math.PI) / 10)) * radius[n % 4];
-		// starX[i] = (int) xOne + 500;
-		// starY[i] = (int) yOne + 500;
-		// g.fillPolygon(starX, starY, 5);
-		// }
-		// starX[i] = (int) xOne + 500;
-		// starY[i] = (int) yOne + 500;
-		// g.fillPolygon(starX, starY, 5);
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// System.out.println("Action Performed");
 
 	}
 
@@ -276,7 +265,6 @@ public class Scenery<ComboBox> extends JComponent implements ActionListener, Ite
 			shape = (String) shapeList.getSelectedItem();
 
 		}
-
 	}
 
 }
